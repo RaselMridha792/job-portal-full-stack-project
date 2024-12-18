@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import regAnimation from "../../assets/lottieFiles/registerAnimation.json";
 import Lottie from "lottie-react";
 import { UserContext } from "../../Context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
@@ -12,6 +12,10 @@ import auth from "../firebase/firebase.init";
 const Register = () => {
   const provider = new GoogleAuthProvider();
   const { handleSignUp } = useContext(UserContext);
+  const location = useLocation()
+  const from = location.state || '/';
+  console.log(location.state)
+  const navigate = useNavigate();
   const [passValid, setPassValid] = useState("");
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
@@ -19,7 +23,8 @@ const Register = () => {
   const handleSignUpGoogle = ()=>{
     signInWithPopup(auth, provider)
     .then(result=>{
-      console.log('sign up successfull')
+      console.log('sign up successfull');
+      navigate(from)
     })
     .catch(error=>{
       console.log(error.message)

@@ -1,13 +1,11 @@
-/** @type {import('tailwindcss').Config} */
+import daisyui from "daisyui"
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
   theme: {
-    extend: {
-      fontFamily: {
-        'Roboto-Mono': ["Roboto Mono", "monospace"],
-        'Roboto': ["Roboto", "serif"],
-      },
-    },
+    extend: {},
   },
-  plugins: [require("daisyui")],
-};
+  plugins: [daisyui],
+}

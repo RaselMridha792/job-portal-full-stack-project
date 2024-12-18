@@ -2,10 +2,17 @@ import React, { useContext } from "react";
 import loginAnimation from "../../assets/lottieFiles/loginAnimation.json";
 import Lottie from "lottie-react";
 import { UserContext } from "../../Context/AuthContext";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import auth from "../firebase/firebase.init";
 
 const Login = () => {
-    const {handleSignIn} = useContext(UserContext);
+  const provider = new GoogleAuthProvider();
+  const { handleSignIn } = useContext(UserContext);
+  const location = useLocation();
+  const from = location.state || "/";
+  const navigate = useNavigate();
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
@@ -13,13 +20,26 @@ const Login = () => {
     const password = form.password.value;
 
     handleSignIn(email, password)
-    .then(result =>{
-        console.log(result)
-    })
-    .catch(error =>{
-        console.log(error.message)
-    })
+      .then((result) => {
+        console.log(result);
+        navigate(from);
+      })
+      .catch((error) => {
+        console.log(error.message);
+      });
   };
+
+
+  const handleSignInGoogle = ()=>{
+    signInWithPopup(auth, provider)
+    .then(result=>{
+      console.log('sign up successfull');
+      navigate(from)
+    })
+    .catch(error=>{
+      console.log(error.message)
+    })
+  }
   return (
     <>
       <div className="max-w-screen-2xl mx-auto">
@@ -36,7 +56,20 @@ const Login = () => {
                 <p className="text-gray-500 py-3 text-center">
                   Access to all features. No credit card required.
                 </p>
-                <button className="btn">Sign In With Google</button>
+                <motion.button
+                  onClick={handleSignInGoogle}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.8 }}
+                  className="border gap-2 flex items-center justify-center px-10 py-3 rounded-2xl hover:text-red-500"
+                >
+                  {" "}
+                  <img
+                    className="w-8"
+                    src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000"
+                    alt=""
+                  />
+                  Sign Up With Google
+                </motion.button>
               </div>
               <form onSubmit={handleLogin} className="card-body">
                 <div className="form-control">
@@ -70,7 +103,9 @@ const Login = () => {
                 </div>
                 <div className="form-control mt-6">
                   <button className="btn bg-gray-800 text-white">Login</button>
-                  <p className="text-center">don't have any account? <Link to='/register'>sign up</Link></p>
+                  <p className="text-center">
+                    don't have any account? <Link to="/register">sign up</Link>
+                  </p>
                 </div>
               </form>
             </div>

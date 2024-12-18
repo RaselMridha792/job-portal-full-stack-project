@@ -11,12 +11,15 @@ import {
 export const UserContext = createContext();
 const AuthContext = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [loader, setLoader] = useState(null);
 
   const handleSignUp = (email, password) => {
+    setLoader(true)
     return createUserWithEmailAndPassword(auth, email, password);
   };
 
   const handleSignIn = (email, password) => {
+    setLoader(true)
     return signInWithEmailAndPassword(auth, email, password);
   };
 
@@ -24,6 +27,7 @@ const AuthContext = ({ children }) => {
     const unsubcribe = onAuthStateChanged(auth, (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
+        setLoader(false);
       } else {
         setUser(null);
       }
@@ -38,6 +42,7 @@ const AuthContext = ({ children }) => {
     handleSignUp,
     handleSignIn,
     user,
+    loader,
   };
   return (
     <UserContext.Provider value={authInfo}>{children}</UserContext.Provider>

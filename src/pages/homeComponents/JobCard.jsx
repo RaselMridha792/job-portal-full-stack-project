@@ -2,9 +2,9 @@ import React from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { PiShoppingBagOpenThin } from "react-icons/pi";
 import { motion } from "motion/react";
+import { Link } from "react-router-dom";
 
 const JobCard = ({ singleJob }) => {
-  console.log(singleJob);
   const {
     company_logo,
     title,
@@ -43,8 +43,8 @@ const JobCard = ({ singleJob }) => {
           </div>
           <p className="py-5">{description}</p>
           <div className="flex items-center flex-wrap gap-2">
-            {requirements.map((requirement) => (
-              <p className="border rounded-lg px-2 py-1 bg-blue-100 flex items-center justify-center">
+            {requirements.map((requirement, index) => (
+              <p key={index} className="border rounded-lg px-2 py-1 bg-blue-100 flex items-center justify-center">
                 {requirement}
               </p>
             ))}
@@ -52,9 +52,9 @@ const JobCard = ({ singleJob }) => {
           <div className="flex items-center justify-between mt-5">
             <p className="font-bold">Salary: {salaryRange.min} - {salaryRange.max} <span className="uppercase">{salaryRange.currency}</span></p>
             <div className="card-actions justify-end">
-              <button className="btn border-blue-100 bg-blue-50 text-blue-500 hover:bg-blue-400 hover:text-black">
+              <Link to={`/jobs/details/${_id}`} className="btn border-blue-100 bg-blue-50 text-blue-500 hover:bg-blue-400 hover:text-black">
                 Apply Now
-              </button>
+              </Link>
             </div>
           </div>
         </div>
