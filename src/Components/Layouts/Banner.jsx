@@ -12,7 +12,7 @@ const Banner = () => {
         style={{ backgroundImage: `url(${bannerBg})` }}
       >
         <div className="hero-content lg:gap-40 flex-col-reverse lg:flex-row-reverse">
-          <div className="flex-1">
+          <div className="flex-1 hidden md:block">
             <motion.img
               animate={{ y: [0, 150, 0] }}
               transition={{ duration: 10, repeat: Infinity }}

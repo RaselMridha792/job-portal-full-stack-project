@@ -1,19 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../Context/AuthContext";
+import axios from "axios";
 
 const MyApplication = () => {
   const { user } = useContext(UserContext);
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const loadData = async () => {
-      const response = await fetch(
-        `http://localhost:5000/user-applications?email=${user.email}`
-      );
-      const data = await response.json();
-      setData(data);
-    };
-    loadData();
+    axios.get( `http://localhost:5000/user-applications?email=${user.email}`, {
+      withCredentials: true,
+    })
+    .then(res=> setData(res.data))
   }, [user.email]);
   return (
     <>
@@ -30,9 +27,9 @@ const MyApplication = () => {
           </thead>
           <tbody>
             {/* row 1 */}
-            {data.map((singleData) => (
+            {data.map((singleData, idx) => (
               <>
-                <tr key={singleData._id}>
+                <tr key={idx}>
                   <td>
                     <div className="flex items-center gap-3">
                       <div className="avatar">

@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import auth from "../firebase/firebase.init";
+import axios from "axios";
 
 const Login = () => {
   const provider = new GoogleAuthProvider();
@@ -21,8 +22,12 @@ const Login = () => {
 
     handleSignIn(email, password)
       .then((result) => {
-        console.log(result);
-        navigate(from);
+        const user = {email: email}
+        axios.post('http://localhost:5000/jwt', user, {withCredentials: true})
+        .then(res =>{
+          console.log(res.data)
+        })
+        // navigate(from);
       })
       .catch((error) => {
         console.log(error.message);
